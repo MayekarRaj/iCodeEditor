@@ -1,7 +1,7 @@
 // App.jsx
 import { Box, ChakraProvider, extendTheme } from '@chakra-ui/react';
 import CodeEditor from './components/CodeEditor';
-import Login from './components/Login'; // Import Login
+
 
 const theme = extendTheme({
   styles: {
@@ -18,7 +18,7 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <Box minH="100vh" minW="100vw" px={6} py={8}>
-        <Login /> {/* Add Login component here */}
+
         <CodeEditor />
       </Box>
     </ChakraProvider>
