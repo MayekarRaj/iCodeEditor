@@ -16,7 +16,7 @@ export const getRuntimes = async () => {
     return filteredLanguages;
 }
 
-export const executeCode = async (language, sourceCode) => {
+export const executeCode = async (language, sourceCode, userInput = '') => {
     try {
         const runtimes = await getRuntimes();
         
@@ -26,7 +26,6 @@ export const executeCode = async (language, sourceCode) => {
         );
 
         if (!runtime) {
-            // throw new Error(`Runtime for language ${language} not found.`);
             alert(`Runtime for language ${language} not found.`);
         }
 
@@ -38,7 +37,8 @@ export const executeCode = async (language, sourceCode) => {
                     "name": "code",
                     "content": sourceCode
                 }
-            ]
+            ],
+            "stdin": userInput // Pass user input as stdin for the execution
         });
 
         return response.data;
