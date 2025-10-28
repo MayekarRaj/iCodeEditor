@@ -1,47 +1,64 @@
-import { Box, MenuItem, Text, Menu, MenuButton, Button, MenuList, Portal } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-// import { LANGUAGES_VERSION } from '../constants';
+import {
+  Box,
+  MenuItem,
+  Text,
+  Menu,
+  MenuButton,
+  Button,
+  MenuList,
+  Portal
+} from '@chakra-ui/react';
 
-
-// const languages = Object.entries(LANGUAGES_VERSION);
 const ACTIVE_COLOR = "blue.400";
 
-const LanguageSelector = ({language, onSelect, languages}) => {
+// eslint-disable-next-line react/prop-types
+const LanguageSelector = ({ language, onSelect, languages }) => {
+  // ✅ Add a safe fallback if 'languages' is missing or undefined
+  const safeLanguages = Array.isArray(languages) ? languages : [];
+
+  // ✅ Optional: Show placeholder if no languages available
+  const hasLanguages = safeLanguages.length > 0;
 
   return (
-    <Box
-       textAlign="left" ml={2} mb={4}>
-      <Text mb={2} fontSize="lg">Language: </Text>
+    <Box textAlign="left" ml={2} mb={4}>
+      <Text mb={2} fontSize="lg">
+        Language:
+      </Text>
       <Menu isLazy>
-        <MenuButton as={Button}>{language}</MenuButton>
+        <MenuButton as={Button}>
+          {language || "Select Language"}
+        </MenuButton>
         <Portal>
-          <MenuList 
-            bg="gray.900"
-            maxH="50vh"
-            overflowY="auto"
-          >
-            {
-              languages.map((lang) => (
-                <MenuItem 
-        
-                    key={lang.language}
-                    color={lang.language === language ? ACTIVE_COLOR : "gray.400"}
-                    bg={lang.language === language ? "gray.900" : "gray.900"}
-                    _hover={{
-                      color: ACTIVE_COLOR,
-                      bg: "gray.900",
-                    }}
-                    onClick={() => onSelect(lang.language)}
+          <MenuList bg="gray.900" maxH="50vh" overflowY="auto">
+            {hasLanguages ? (
+              safeLanguages.map((lang) => (
+                <MenuItem
+                  key={lang.language}
+                  color={lang.language === language ? ACTIVE_COLOR : "gray.400"}
+                  bg={lang.language === language ? "gray.900" : "gray.900"}
+                  _hover={{
+                    color: ACTIVE_COLOR,
+                    bg: "gray.900",
+                  }}
+                  onClick={() => onSelect && onSelect(lang.language)}
                 >
                   {lang.language}
                   &nbsp;
-                  {/* <Text as="span" color="gray.600" fontSize="sm">{version}</Text> */}
-                  <span style={{ color: 'gray.900', fontSize: '0.75rem', }}>
+                  <span
+                    style={{
+                      color: 'gray.500',
+                      fontSize: '0.75rem',
+                    }}
+                  >
                     ({lang.version})
-                  </span> 
+                  </span>
                 </MenuItem>
               ))
-            }
+            ) : (
+              <MenuItem disabled color="gray.500">
+                No languages available
+              </MenuItem>
+            )}
           </MenuList>
         </Portal>
       </Menu>

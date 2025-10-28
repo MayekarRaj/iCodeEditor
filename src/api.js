@@ -4,6 +4,14 @@ const API = axios.create({
     baseURL: "https://emkc.org/api/v2/piston"
 })
 
+// Auth helper: posts credentials to an auth endpoint.
+// Configure the endpoint using Vite env variable VITE_AUTH_URL or it will default to /api/auth/login
+export const login = async (email, password) => {
+    const url = import.meta.env.VITE_AUTH_URL || "/api/auth/login";
+    const response = await axios.post(url, { email, password });
+    return response.data;
+}
+
 export const getRuntimes = async () => {
     const desiredLanguages = ['js', 'python', 'c++', 'java', 'go'];
 
